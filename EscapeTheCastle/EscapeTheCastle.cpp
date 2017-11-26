@@ -23,6 +23,9 @@ using namespace glm;
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing fla
+
+void DrawLevel(GLuint programID, GLuint MatrixID, GLuint VertexArrayID, char* TextureName, char* ObjectName, glm::vec3 ScalingValues);
+
 int main(void)
 {
 	// Initialise GLFW
@@ -88,8 +91,20 @@ int main(void)
 	// Get a handle for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 	
+	/*** To Do: Draw Level Functions ******/
+	DrawLevel(programID, MatrixID, VertexArrayID, "wall1tex.bmp", "castle1Tex.obj", vec3(6.0f, 6.0f, 6.0f));
+	/**************************************/
+
+	// Close OpenGL window and terminate GLFW
+	glfwTerminate();
+
+	return 0;
+}
+
+void DrawLevel(GLuint programID, GLuint MatrixID, GLuint VertexArrayID, char* TextureName, char* ObjectName, glm::vec3 ScalingValues)
+{
 	// Load the texture
-	GLuint Texture = loadBMP_custom("parts.bmp");
+	GLuint Texture = loadBMP_custom(TextureName);
 	// Get a handle for our "myTextureSampler" uniform
 	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
 
@@ -97,12 +112,10 @@ int main(void)
 	std::vector<unsigned short> indices;
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
-	std::vector<glm::vec3> normals; // Won't be used at the moment.
-	//bool res = loadOBJ("untitled.obj", vertices, uvs, normals);
-	bool res = loadAssImp("untitled.obj", indices, vertices, uvs, normals);
+	std::vector<glm::vec3> normals; // Won't be used at the moment.=
+	bool res = loadAssImp(ObjectName, indices, vertices, uvs, normals);
 
 	// Load it into a VBO
-
 	GLuint vertexbuffer;
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -114,7 +127,6 @@ int main(void)
 	glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
 
 	do {
-
 		// Clear the screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -123,9 +135,12 @@ int main(void)
 
 		// Compute the MVP matrix from keyboard and mouse input
 		computeMatricesFromInputs();
+
+		glm::mat4 TranslationMatrix = translate(mat4(), vec3(0.0f, 0.0f, 0.0f)); // A bit to the left
+		glm::mat4 ScalingMatrix = scale(mat4(), ScalingValues);
 		glm::mat4 ProjectionMatrix = getProjectionMatrix();
 		glm::mat4 ViewMatrix = getViewMatrix();
-		glm::mat4 ModelMatrix = glm::mat4(1.0);
+		glm::mat4 ModelMatrix = TranslationMatrix * ScalingMatrix;
 		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 
 		// Send our transformation to the currently bound shader, 
@@ -165,10 +180,6 @@ int main(void)
 		// Draw the triangle !
 		glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
-
-		
-
-
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 
@@ -186,10 +197,4 @@ int main(void)
 	glDeleteProgram(programID);
 	glDeleteTextures(1, &Texture);
 	glDeleteVertexArrays(1, &VertexArrayID);
-
-	// Close OpenGL window and terminate GLFW
-	glfwTerminate();
-
-	return 0;
 }
-
