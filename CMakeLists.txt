@@ -70,7 +70,14 @@ add_executable(EscapeTheCastle
 	common/texture.hpp
 	common/objloader.cpp
 	common/objloader.hpp
-	
+	objects/GameObject.hpp
+	objects/GameObject.cpp
+	objects/Game.hpp
+	objects/Game.cpp
+	objects/Level.hpp
+	objects/Level.cpp
+	objects/Room.hpp
+	objects/Room.cpp
 	EscapeTheCastle/StandardShading.vertexshader
 	EscapeTheCastle/StandardShading.fragmentshader
 )
@@ -114,7 +121,15 @@ add_executable(misc05_picking_slow_easy
 	common/objloader.hpp
 	common/vboindexer.cpp
 	common/vboindexer.hpp
-	
+	objects/GameObject.hpp
+	objects/GameObject.cpp
+	objects/Game.hpp
+	objects/Game.cpp
+	objects/Level.hpp
+	objects/Level.cpp
+	objects/Room.hpp
+	objects/Room.cpp
+
 	misc05_picking/StandardShading.vertexshader
 	misc05_picking/StandardShading.fragmentshader
 	misc05_picking/Picking.vertexshader
@@ -141,7 +156,15 @@ add_executable(misc05_picking_custom
 	common/objloader.hpp
 	common/vboindexer.cpp
 	common/vboindexer.hpp
-	
+	objects/GameObject.hpp
+	objects/GameObject.cpp
+	objects/Game.hpp
+	objects/Game.cpp
+	objects/Level.hpp
+	objects/Level.cpp
+	objects/Room.hpp
+	objects/Room.cpp
+
 	misc05_picking/StandardShading.vertexshader
 	misc05_picking/StandardShading.fragmentshader
 )
@@ -166,7 +189,15 @@ add_executable(misc05_picking_BulletPhysics
 	common/objloader.hpp
 	common/vboindexer.cpp
 	common/vboindexer.hpp
-	
+	objects/GameObject.hpp
+	objects/GameObject.cpp
+	objects/Game.hpp
+	objects/Game.cpp
+	objects/Level.hpp
+	objects/Level.cpp
+	objects/Room.hpp
+	objects/Room.cpp
+
 	misc05_picking/StandardShading.vertexshader
 	misc05_picking/StandardShading.fragmentshader
 )
